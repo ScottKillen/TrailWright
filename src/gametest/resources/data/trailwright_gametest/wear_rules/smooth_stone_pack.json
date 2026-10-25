@@ -1,0 +1,2 @@
+{ "block": "minecraft:smooth_stone", "priority": 50, "base_threshold": 0.01, "jitter": 0, "advance_chance": 1,
+  "next": [ { "when": { "type": "always" }, "to": "minecraft:cobblestone" } ] }

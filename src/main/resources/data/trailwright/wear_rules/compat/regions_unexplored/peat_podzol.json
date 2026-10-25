@@ -1,0 +1,16 @@
+{
+  "block": "regions_unexplored:peat_podzol",
+  "priority": 0,
+  "base_threshold": 14,
+  "jitter": 0.35,
+  "advance_chance": 0.35,
+  "mobs_can_advance": true,
+  "next": [
+    {
+      "when": {
+        "type": "always"
+      },
+      "to": "regions_unexplored:peat_dirt"
+    }
+  ]
+}

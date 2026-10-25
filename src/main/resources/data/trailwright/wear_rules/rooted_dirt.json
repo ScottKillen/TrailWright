@@ -1,0 +1,8 @@
+{
+  "block": "minecraft:rooted_dirt",
+  "priority": 0,
+  "base_threshold": 18,
+  "jitter": 0.35,
+  "advance_chance": 0.30,
+  "next": [ { "when": { "type": "always" }, "to": "minecraft:coarse_dirt" } ]
+}

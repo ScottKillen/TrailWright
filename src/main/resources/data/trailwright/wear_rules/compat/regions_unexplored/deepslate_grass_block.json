@@ -1,0 +1,16 @@
+{
+  "block": "regions_unexplored:deepslate_grass_block",
+  "priority": 0,
+  "base_threshold": 12,
+  "jitter": 0.35,
+  "advance_chance": 0.35,
+  "mobs_can_advance": true,
+  "next": [
+    {
+      "when": {
+        "type": "always"
+      },
+      "to": "minecraft:deepslate"
+    }
+  ]
+}

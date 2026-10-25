@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "trailwright",
+  "version": "${version}",
+  "name": "TrailWright",
+  "description": "Trails wear into the ground where players, mounts, and mobs walk: grass to dirt, then coarse dirt, or mud near water. Bone meal, brushing, or planting restores it. Rules are data-driven. Server-side; optional on clients, where it adds an F3 wear readout for ops. Runs on Forge 1.20.1 through Sinytra Connector.",
+  "authors": ["Scott Killen"],
+  "license": "MIT",
+  "icon": "assets/trailwright/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["us.someguy.trailwright.TrailWrightFabric"],
+    "client": ["us.someguy.trailwright.client.TrailWrightClient"],
+    "modmenu": ["us.someguy.trailwright.client.compat.ModMenuCompat"]
+  },
+  "mixins": [
+    "trailwright.mixins.json",
+    { "config": "trailwright.client.mixins.json", "environment": "client" }
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.21",
+    "minecraft": "~1.20.1",
+    "java": ">=17",
+    "fabric-lifecycle-events-v1": "*",
+    "fabric-resource-loader-v0": "*",
+    "fabric-command-api-v2": "*",
+    "fabric-networking-api-v1": "*"
+  },
+  "suggests": {
+    "modmenu": ">=7.0.0"
+  }
+}

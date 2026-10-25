@@ -1,0 +1,5 @@
+# Wrapper scripts must keep their native line endings regardless of core.autocrlf:
+# a CRLF gradlew fails on Linux CI with "/bin/sh^M: bad interpreter".
+gradlew      text eol=lf
+*.bat        text eol=crlf
+*.jar        binary

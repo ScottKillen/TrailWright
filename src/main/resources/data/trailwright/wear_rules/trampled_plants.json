@@ -1,0 +1,16 @@
+{
+  "block": "#trailwright:trampled_first",
+  "priority": 0,
+  "base_threshold": 4,
+  "jitter": 0.35,
+  "advance_chance": 0.4,
+  "mobs_can_advance": true,
+  "next": [
+    {
+      "when": {
+        "type": "always"
+      },
+      "to": "minecraft:air"
+    }
+  ]
+}

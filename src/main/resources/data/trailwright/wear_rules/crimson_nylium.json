@@ -1,0 +1,15 @@
+{
+  "block": "minecraft:crimson_nylium",
+  "priority": 0,
+  "base_threshold": 14,
+  "jitter": 0.35,
+  "advance_chance": 0.35,
+  "next": [
+    {
+      "when": {
+        "type": "always"
+      },
+      "to": "minecraft:netherrack"
+    }
+  ]
+}

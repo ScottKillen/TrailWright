@@ -1,0 +1,1 @@
+{ "block": "minecraft:stone", "base_threshold": 1, "advance_chance": 1, "next": [ { "when": { "type": "sideways" }, "to": "minecraft:dirt" } ] }

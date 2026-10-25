@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "trailwright-gametest",
+  "version": "0.0.0",
+  "name": "TrailWright GameTests",
+  "description": "Dev-only GameTests and test rules for TrailWright. Never shipped.",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-gametest": ["us.someguy.trailwright.gametest.WearGameTests", "us.someguy.trailwright.gametest.ResetGameTests", "us.someguy.trailwright.gametest.ReadoutGameTests", "us.someguy.trailwright.gametest.MobGameTests"]
+  },
+  "depends": {
+    "trailwright": "*",
+    "fabric-gametest-api-v1": "*"
+  }
+}

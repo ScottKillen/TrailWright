@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:chicken",
+    "minecraft:rabbit",
+    "minecraft:frog",
+    "minecraft:tadpole",
+    "minecraft:bee",
+    "minecraft:silverfish",
+    "minecraft:endermite",
+    "minecraft:bat",
+    "minecraft:parrot",
+    "minecraft:allay",
+    "minecraft:vex",
+    "minecraft:phantom"
+  ]
+}

@@ -1,0 +1,141 @@
+// Purpose:      Gradle build for TrailWright (single Fabric jar, Forge via Sinytra Connector).
+// Dependencies: gradle.properties (versions), settings.gradle (Loom plugin repo),
+//               Java 17 toolchain.
+
+plugins {
+    id 'fabric-loom' version "${loom_version}"
+    id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+repositories {
+    mavenCentral()
+    // Mod Menu. Limited to its group so no other dependency resolves from this repository.
+    exclusiveContent {
+        forRepository { maven { name = 'TerraformersMC'; url = 'https://maven.terraformersmc.com/releases/' } }
+        filter { includeGroup 'com.terraformersmc' }
+    }
+}
+
+// GameTests live in their own source set and mini-mod (trailwright-gametest) so test code and
+// test-only data never ship. Forgified Fabric API lacks the GameTest module, so a GameTest
+// entrypoint in the shipped jar would point at classes Forge players do not have.
+sourceSets {
+    gametest {
+        compileClasspath += sourceSets.main.compileClasspath + sourceSets.main.output
+        runtimeClasspath += sourceSets.main.runtimeClasspath + sourceSets.main.output
+    }
+}
+
+loom {
+    // Split source sets keep client-only code out of the server classpath.
+    // TrailWright has no client code today; the split costs nothing and prevents accidents.
+    splitEnvironmentSourceSets()
+
+    mods {
+        trailwright {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+        "trailwright-gametest" {
+            sourceSet sourceSets.gametest
+        }
+    }
+
+    runs {
+        // `./gradlew runGametest` — headless server that runs Fabric GameTests and exits.
+        // The entrypoint is declared in src/gametest/resources/fabric.mod.json.
+        gametest {
+            server()
+            name "Game Test"
+            source sourceSets.gametest
+            vmArg "-Dfabric-api.gametest"
+            vmArg "-Dfabric-api.gametest.report-file=${layout.buildDirectory.file("junit-gametest.xml").get().asFile}"
+            runDir "build/gametest"
+        }
+    }
+}
+
+// T4.7: seed the GameTest server's config/trailwright/rules/ with a rule that must override a
+// higher-priority data-pack rule. Runs before every runGametest.
+def copyGametestConfigRules = tasks.register('copyGametestConfigRules', Copy) {
+    from 'src/gametest/config-rules'
+    into layout.buildDirectory.dir('gametest/config/trailwright/rules')
+}
+tasks.matching { it.name == 'runGametest' }.configureEach { dependsOn copyGametestConfigRules }
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+
+    // Mapping choice:
+    //   officialMojangMappings()  — chosen. Names match Forge-side tooling and crash logs
+    //                               users will post from Connector setups.
+    //   "net.fabricmc:yarn:..."   — Fabric's default community mappings; fine on pure Fabric,
+    //                               but adds a translation step when debugging Forge reports.
+    mappings loom.officialMojangMappings()
+
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    // Full Fabric API on the dev classpath for convenience. fabric.mod.json declares only
+    // the modules actually used, which keeps the Connector surface small.
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+    // Mod Menu: compile-time only. fabric.mod.json lists it under "suggests", not "depends",
+    // and declares a "modmenu" entrypoint that Fabric Loader loads only when Mod Menu is
+    // installed, so without it the class using its API is never loaded.
+    // Non-transitive: its POM names Fabric API modules that must not override the pinned
+    // fabric_api_version on the compile classpath.
+    modCompileOnly("com.terraformersmc:modmenu:${project.modmenu_version}") { transitive = false }
+    // Dev runs only (never published): runClient shows the Mod Menu button.
+    // `./gradlew runClient -PnoModMenu` checks the mod without it.
+    if (!project.hasProperty('noModMenu')) {
+        modLocalRuntime("com.terraformersmc:modmenu:${project.modmenu_version}") { transitive = false }
+    }
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+processResources {
+    // Read at configuration time; touching `project` inside the action is deprecated in Gradle 9.
+    def modVersion = project.version
+    inputs.property "version", modVersion
+    filesMatching("fabric.mod.json") {
+        expand "version": modVersion
+    }
+    // The player guide ships in the jar (there is no public repository); PlayerGuide writes
+    // it to config/trailwright/RULES.md. docs/RULES.md stays the single source.
+    from("docs/RULES.md") {
+        into "trailwright"
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release = 17   // Minecraft 1.20.1 requires Java 17.
+}
+
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+jar {
+    // Resolved at configuration time; touching `project` inside rename is deprecated in Gradle 9.
+    def archiveBase = base.archivesName.get()
+    from("LICENSE") {
+        rename { "${it}_${archiveBase}" }
+    }
+}
+
+// Footer: Artifact ID trailwright-build-gradle-001 · Last updated 2026-10-25

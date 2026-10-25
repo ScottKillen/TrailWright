@@ -1,0 +1,2 @@
+{ "block": "#minecraft:wool", "base_threshold": 0.01, "jitter": 0, "advance_chance": 1,
+  "next": [ { "when": { "type": "always" }, "to": "minecraft:hay_block" } ] }

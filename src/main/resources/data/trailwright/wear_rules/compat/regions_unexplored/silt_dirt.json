@@ -1,0 +1,22 @@
+{
+  "block": "regions_unexplored:silt_dirt",
+  "priority": 0,
+  "base_threshold": 16,
+  "jitter": 0.35,
+  "advance_chance": 0.3,
+  "next": [
+    {
+      "when": {
+        "type": "near_water",
+        "radius": 2
+      },
+      "to": "regions_unexplored:silt_mud"
+    },
+    {
+      "when": {
+        "type": "always"
+      },
+      "to": "regions_unexplored:silt_coarse_dirt"
+    }
+  ]
+}

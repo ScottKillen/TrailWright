@@ -1,0 +1,5 @@
+{ "block": ["notamod:fake_block", "#notamod:fake_tag", "minecraft:clay"], "base_threshold": 0.01, "jitter": 0, "advance_chance": 1,
+  "next": [
+    { "when": { "type": "always" }, "to": "notamod:fake_target" },
+    { "when": { "type": "always" }, "to": "minecraft:gravel" }
+  ] }

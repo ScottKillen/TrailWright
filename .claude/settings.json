@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./gradlew build*)",
+      "Bash(./gradlew test*)",
+      "Bash(./gradlew runGametest*)",
+      "Bash(./gradlew clean*)",
+      "Bash(./gradlew --version)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "WebFetch(domain:fabricmc.net)",
+      "WebFetch(domain:maven.fabricmc.net)",
+      "WebFetch(domain:modrinth.com)",
+      "WebFetch(domain:moddedmc.wiki)",
+      "WebFetch(domain:github.com)"
+    ],
+    "ask": [
+      "Bash(./gradlew runClient*)",
+      "Bash(./gradlew runServer*)",
+      "Bash(git commit*)",
+      "Bash(git push*)"
+    ]
+  }
+}

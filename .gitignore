@@ -1,0 +1,15 @@
+# Gradle / Loom
+.gradle/
+build/
+out/
+run/
+# IDE
+.idea/
+*.iml
+.vscode/
+bin/
+# OS
+.DS_Store
+Thumbs.db
+# Log4j output from unit tests run in the project dir
+logs/
